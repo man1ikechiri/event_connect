@@ -6,6 +6,7 @@ import { Topbar } from "@/components/layout/topbar";
 import { EmptyState } from "@/components/ui/empty-state";
 import { formatEventRange, relativeTime } from "@/lib/utils/dates";
 import { SPEAKER_NAV_ITEMS } from "@/lib/nav-items";
+import { HeroBanner } from "@/components/layout/hero-banner";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -61,7 +62,11 @@ export default async function SpeakerDashboardPage() {
   return (
     <>
       <Topbar title="Dashboard" portalLabel="Speaker portal" navItems={SPEAKER_NAV_ITEMS} />
+      <HeroBanner src="/images/hero-banner.png" />
       <main className="mx-auto max-w-5xl space-y-8 px-4 py-8 md:px-8">
+        <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
+          Welcome! What do we have today?
+        </h1>
         <section className="grid gap-3 sm:grid-cols-3">
           {stats.map((stat) => (
             <div key={stat.label} className="rounded-card border border-surface-border bg-white p-4">

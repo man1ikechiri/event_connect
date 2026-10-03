@@ -1,3 +1,4 @@
+//src\lib\nav-icon-registry.ts
 import {
   LayoutDashboard,
   CalendarDays,

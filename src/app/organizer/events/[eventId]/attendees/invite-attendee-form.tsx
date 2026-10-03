@@ -1,3 +1,4 @@
+//src\app\organizer\events\[eventId]\attendees\invite-attendee-form.tsx
 "use client";
 
 import { useEffect, useRef } from "react";

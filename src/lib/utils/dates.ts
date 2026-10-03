@@ -21,22 +21,51 @@ export function formatEventRange(startIso: string, endIso: string) {
 }
 
 /** Aggregate windows for the organizer dashboard stat cards (Section 4). */
-export function dashboardDateRanges(now = new Date()) {
-  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+// src/lib/utils/dates.ts
 
-  const dayOfWeek = (startOfDay.getDay() + 6) % 7; // Monday = 0
-  const startOfWeek = new Date(startOfDay);
-  startOfWeek.setDate(startOfDay.getDate() - dayOfWeek);
+export interface DateRange {
+  gte: string;
+  lt: string;
+}
 
+export interface DashboardDateRanges {
+  week: DateRange;
+  month: DateRange;
+  quarter: DateRange;
+  year: DateRange;
+}
+
+/**
+ * Returns half-open date ranges [start, end) for the current week,
+ * month, quarter, and year. Both bounds are ISO strings so they can
+ * be dropped straight into PostgREST's .gte() / .lt() filters.
+ */
+export function dashboardDateRanges(now: Date = new Date()): DashboardDateRanges {
+  // Week — Sunday-start. Change `now.getDay()` offset if you want Monday.
+  const startOfWeek = new Date(now);
+  startOfWeek.setDate(now.getDate() - now.getDay());
+  startOfWeek.setHours(0, 0, 0, 0);
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 7);
+
+  // Month
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const startOfQuarter = new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1);
+  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+  // Quarter
+  const q = Math.floor(now.getMonth() / 3);
+  const startOfQuarter = new Date(now.getFullYear(), q * 3, 1);
+  const endOfQuarter = new Date(now.getFullYear(), q * 3 + 3, 1);
+
+  // Year
   const startOfYear = new Date(now.getFullYear(), 0, 1);
+  const endOfYear = new Date(now.getFullYear() + 1, 0, 1);
 
   return {
-    week: startOfWeek.toISOString(),
-    month: startOfMonth.toISOString(),
-    quarter: startOfQuarter.toISOString(),
-    year: startOfYear.toISOString(),
+    week:    { gte: startOfWeek.toISOString(),    lt: endOfWeek.toISOString() },
+    month:   { gte: startOfMonth.toISOString(),   lt: endOfMonth.toISOString() },
+    quarter: { gte: startOfQuarter.toISOString(), lt: endOfQuarter.toISOString() },
+    year:    { gte: startOfYear.toISOString(),    lt: endOfYear.toISOString() },
   };
 }
 

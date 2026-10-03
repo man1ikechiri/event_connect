@@ -17,7 +17,7 @@ export default async function AdminUsersPage() {
 
   return (
     <>
-      <Topbar title="Users" portalLabel="Admin" navItems={ADMIN_NAV_ITEMS} />
+      <Topbar title="Users" portalLabel="Admin" navItems={[]} />
       <main className="mx-auto max-w-6xl px-4 py-8 md:px-8">
         <div className="overflow-hidden rounded-card border border-surface-border bg-white">
           <table className="w-full text-left text-sm">

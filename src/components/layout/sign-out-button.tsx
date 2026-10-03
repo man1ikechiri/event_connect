@@ -1,18 +1,46 @@
-"use client";
+// src/app/admin/layout.tsx
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { Sidebar } from "@/components/layout/sidebar";
+import SignOutButton from "@/components/layout/sign-out-button";
+import { UserProvider } from "@/components/layout/user-context";
+import { ADMIN_NAV_ITEMS } from "@/lib/nav-items";
 
-import { LogOut } from "lucide-react";
+export default async function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login?next=/admin/dashboard");
 
-export function SignOutButton({ name }: { name?: string }) {
+  const { data: profile } = await supabase
+    .from("users")
+    .select("is_admin, full_name, avatar_url")
+    .eq("id", user.id)
+    .single();
+  if (!profile?.is_admin) redirect("/onboarding");
+
   return (
-    <form action="/auth/signout" method="post" className="border-t border-white/10 pt-4">
-      {name && <p className="mb-2 truncate px-3 text-sm text-navy-100">{name}</p>}
-      <button
-        type="submit"
-        className="flex w-full items-center gap-2 rounded-control px-3 py-2 text-sm font-medium text-navy-200 hover:bg-white/5 hover:text-white"
-      >
-        <LogOut className="size-4" aria-hidden />
-        Sign out
-      </button>
-    </form>
+    <UserProvider
+      user={{
+        id: user.id,
+        name: profile?.full_name ?? null,
+        email: user.email ?? null,
+        avatarUrl: profile?.avatar_url ?? null,
+      }}
+    >
+      <div className="min-h-screen bg-surface-muted">
+        <Sidebar
+          portalLabel="Admin"
+          items={ADMIN_NAV_ITEMS}
+          footer={<SignOutButton name={profile.full_name} />}
+        />
+        <div className="md:pl-64">{children}</div>
+      </div>
+    </UserProvider>
   );
 }

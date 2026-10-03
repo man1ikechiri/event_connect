@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LoginForm } from "@/app/login/login-form";
 
+
 export const metadata: Metadata = {
   title: "Sign in",
   description: "Sign in to EventConnect with Google or a one-time email link. No passwords.",

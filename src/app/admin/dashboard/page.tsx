@@ -26,7 +26,7 @@ export default async function AdminDashboardPage() {
 
   return (
     <>
-      <Topbar title="Dashboard" portalLabel="Admin" navItems={ADMIN_NAV_ITEMS} />
+      <Topbar title="Dashboard" portalLabel="Admin" navItems={[]} />
       <main className="mx-auto max-w-5xl px-4 py-8 md:px-8">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (

@@ -1,3 +1,4 @@
+// src/app/organizer/dashboard/page.tsx
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Plus, MapPin, Video, ChevronRight, CalendarDays } from "lucide-react";
@@ -8,6 +9,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { formatEventRange, dashboardDateRanges } from "@/lib/utils/dates";
 import { ORGANIZER_NAV_ITEMS } from "@/lib/nav-items";
+import { HeroBanner } from "@/components/layout/hero-banner";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -19,42 +21,56 @@ export default async function OrganizerDashboardPage() {
   if (!user) return null;
 
   const ranges = dashboardDateRanges();
+  const nowIso = new Date().toISOString();
 
   const [total, week, month, quarter, year, liveEvents, plannedEvents] = await Promise.all([
-    supabase.from("events").select("id", { count: "exact", head: true }).eq("organizer_id", user.id),
+    supabase
+      .from("events")
+      .select("id", { count: "exact", head: true })
+      .eq("organizer_id", user.id),
+
     supabase
       .from("events")
       .select("id", { count: "exact", head: true })
       .eq("organizer_id", user.id)
-      .gte("start_datetime", ranges.week),
+      .gte("start_datetime", ranges.week.gte)
+      .lt("start_datetime", ranges.week.lt),
+
     supabase
       .from("events")
       .select("id", { count: "exact", head: true })
       .eq("organizer_id", user.id)
-      .gte("start_datetime", ranges.month),
+      .gte("start_datetime", ranges.month.gte)
+      .lt("start_datetime", ranges.month.lt),
+
     supabase
       .from("events")
       .select("id", { count: "exact", head: true })
       .eq("organizer_id", user.id)
-      .gte("start_datetime", ranges.quarter),
+      .gte("start_datetime", ranges.quarter.gte)
+      .lt("start_datetime", ranges.quarter.lt),
+
     supabase
       .from("events")
       .select("id", { count: "exact", head: true })
       .eq("organizer_id", user.id)
-      .gte("start_datetime", ranges.year),
+      .gte("start_datetime", ranges.year.gte)
+      .lt("start_datetime", ranges.year.lt),
+
     supabase
       .from("events")
       .select("id, title, start_datetime, end_datetime, venue_label, is_virtual, status")
       .eq("organizer_id", user.id)
-      .lte("start_datetime", new Date().toISOString())
-      .gte("end_datetime", new Date().toISOString())
+      .lte("start_datetime", nowIso)
+      .gte("end_datetime", nowIso)
       .order("start_datetime", { ascending: true })
       .limit(5),
+
     supabase
       .from("events")
       .select("id, title, start_datetime, end_datetime, venue_label, is_virtual, status")
       .eq("organizer_id", user.id)
-      .gt("start_datetime", new Date().toISOString())
+      .gt("start_datetime", nowIso)
       .order("start_datetime", { ascending: true })
       .limit(5),
   ]);
@@ -81,8 +97,12 @@ export default async function OrganizerDashboardPage() {
           </Link>
         }
       />
+      <HeroBanner src="/images/hero-banner.png" />
 
       <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 md:px-8">
+        <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
+          Hello! Good to have you back!
+        </h1>
         <section aria-label="Event totals" className="grid grid-cols-2 gap-3 sm:grid-cols-5">
           {stats.map((stat) => (
             <div key={stat.label} className="rounded-card border border-surface-border bg-white p-4">
@@ -99,6 +119,7 @@ export default async function OrganizerDashboardPage() {
   );
 }
 
+// EventSection unchanged — leave as-is
 function EventSection({
   title,
   events,

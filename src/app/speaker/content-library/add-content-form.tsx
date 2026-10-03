@@ -1,3 +1,4 @@
+// src/app/speaker/content-library/add-content-form.tsx
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -11,7 +12,13 @@ import { Button } from "@/components/ui/button";
 
 const initialState: ActionState = {};
 
-export function AddContentForm({ contentTypes }: { contentTypes: { id: string; label: string }[] }) {
+export function AddContentForm({
+  contentTypes,
+  events,
+}: {
+  contentTypes: { id: string; label: string }[];
+  events: { id: string; title: string }[];
+}) {
   const [state, formAction] = useActionState(addContentItem, initialState);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -19,8 +26,36 @@ export function AddContentForm({ contentTypes }: { contentTypes: { id: string; l
     if (state.success) formRef.current?.reset();
   }, [state.success]);
 
+  if (events.length === 0) {
+    return (
+      <p className="text-sm text-navy-500">
+        You need to accept a speaker invite before you can add content — every item is tied to a specific event.
+      </p>
+    );
+  }
+
   return (
     <form ref={formRef} action={formAction} className="space-y-4">
+      <Field
+        label="Event"
+        htmlFor="content-event"
+        required
+        hint="Content only counts toward activation for the event you pick here."
+      >
+        <select
+          id="content-event"
+          name="event_id"
+          required
+          className="h-10 w-full rounded-control border border-surface-border bg-white px-3 text-sm text-navy focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20"
+        >
+          <option value="">Select an event…</option>
+          {events.map((e) => (
+            <option key={e.id} value={e.id}>
+              {e.title}
+            </option>
+          ))}
+        </select>
+      </Field>
       <Field label="Type" htmlFor="content-type" required>
         <select
           id="content-type"

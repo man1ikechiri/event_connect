@@ -23,7 +23,7 @@ const config: Config = {
           900: "#0C1322",
         },
         amber: {
-          DEFAULT: "#D9A441",
+          DEFAULT: "#D9A44C",
           50: "#FDF6E9",
           100: "#FAEAC7",
           200: "#F3D48F",

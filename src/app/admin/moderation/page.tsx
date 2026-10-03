@@ -19,7 +19,7 @@ export default async function AdminModerationPage() {
 
   return (
     <>
-      <Topbar title="Moderation" portalLabel="Admin" navItems={ADMIN_NAV_ITEMS} />
+      <Topbar title="Moderation" portalLabel="Admin" navItems={[]} />
       <main className="mx-auto max-w-4xl px-4 py-8 md:px-8">
         {!flags || flags.length === 0 ? (
           <div className="rounded-card border border-dashed border-surface-border bg-white">

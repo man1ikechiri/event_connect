@@ -1,3 +1,4 @@
+//src\app\organizer\events\[eventId]\layout.tsx
 import { notFound, redirect } from "next/navigation";
 import { MapPin, Video } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";

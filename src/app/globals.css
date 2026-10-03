@@ -22,6 +22,48 @@
   }
 }
 
+/* ============================================================
+   Hero banner animations
+   ============================================================ */
+
+@keyframes kenBurns {
+  0%   { transform: scale(1.02) translate(0, 0); }
+  100% { transform: scale(1.06) translate(-0.5%, -0.8%); }
+}
+
+@keyframes blobDrift1 {
+  0%, 100% { transform: translate(0, 0)     scale(1); }
+  50%      { transform: translate(32px, -22px) scale(1.12); }
+}
+
+@keyframes blobDrift2 {
+  0%, 100% { transform: translate(0, 0)      scale(1); }
+  50%      { transform: translate(-26px, 18px) scale(1.08); }
+}
+
+.hero-ken-burns {
+  animation: kenBurns 22s ease-out infinite alternate;
+  will-change: transform;
+}
+
+.hero-blob-1 {
+  animation: blobDrift1 19s ease-in-out infinite;
+  will-change: transform;
+}
+
+.hero-blob-2 {
+  animation: blobDrift2 23s ease-in-out infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-ken-burns,
+  .hero-blob-1,
+  .hero-blob-2 {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

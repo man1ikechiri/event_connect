@@ -28,6 +28,9 @@ export default async function ProcessUsersPage({ searchParams }: { searchParams:
     <>
       <Topbar title="Process users" portalLabel="Organizer portal" navItems={ORGANIZER_NAV_ITEMS} />
       <main className="mx-auto max-w-5xl px-4 py-8 md:px-8">
+        <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
+          Process Users
+        </h1>
         <div className="mb-4 flex items-start gap-2 rounded-control bg-state-infoBg px-4 py-3 text-sm text-state-info">
           <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
           <p>

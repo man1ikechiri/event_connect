@@ -1,3 +1,4 @@
+// src/app/speaker/content-library/content-card.tsx
 "use client";
 
 import { useTransition } from "react";
@@ -16,13 +17,26 @@ const ICONS: Record<string, typeof Globe> = {
 export function ContentCard({
   item,
 }: {
-  item: { id: string; title: string; url: string; preview_status: string; type_slug: string; type_label: string };
+  item: {
+    id: string;
+    title: string;
+    url: string;
+    preview_status: string;
+    type_slug: string;
+    type_label: string;
+    event_title: string;
+  };
 }) {
   const [pending, startTransition] = useTransition();
   const Icon = ICONS[item.type_slug] ?? Globe;
 
   return (
     <div className="group relative flex flex-col gap-3 rounded-card border border-surface-border bg-white p-4">
+      {item.event_title && (
+        <span className="absolute -top-2 left-3 rounded-full bg-amber px-2 py-0.5 text-[10px] font-semibold text-white">
+          {item.event_title}
+        </span>
+      )}
       <div className="flex items-start justify-between">
         <div className="flex size-10 items-center justify-center rounded-control bg-navy-50 text-navy">
           <Icon className="size-5" aria-hidden />

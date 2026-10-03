@@ -25,7 +25,7 @@ export default async function AdminAuditLogPage({ searchParams }: { searchParams
 
   return (
     <>
-      <Topbar title="Audit log" portalLabel="Admin" navItems={ADMIN_NAV_ITEMS} />
+      <Topbar title="Audit log" portalLabel="Admin" navItems={[]} />
       <main className="mx-auto max-w-5xl px-4 py-8 md:px-8">
         <form className="mb-4">
           <input

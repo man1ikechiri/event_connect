@@ -25,6 +25,7 @@ export const SPEAKER_NAV_ITEMS: NavItem[] = [
 export const ATTENDEE_NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/attendee/dashboard", icon: "LayoutDashboard" },
   { label: "My events", href: "/attendee/my-events", icon: "CalendarCheck2" },
+  { label: "Speakers", href: "/attendee/speakers", icon: "User" },
   { label: "My questions", href: "/attendee/questions", icon: "MessagesSquare" },
 ];
 

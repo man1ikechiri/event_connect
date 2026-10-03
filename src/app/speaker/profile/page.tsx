@@ -26,6 +26,9 @@ export default async function SpeakerProfilePage() {
     <>
       <Topbar title="Profile" portalLabel="Speaker portal" navItems={SPEAKER_NAV_ITEMS} />
       <main className="mx-auto max-w-2xl px-4 py-8 md:px-8">
+        <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
+          My Profile
+        </h1>
         <div className="rounded-card border border-surface-border bg-white p-6">
           <SpeakerProfileForm
             defaults={{

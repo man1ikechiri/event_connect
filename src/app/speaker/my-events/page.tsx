@@ -51,6 +51,9 @@ export default async function SpeakerMyEventsPage({ searchParams }: { searchPara
     <>
       <Topbar title="My events" portalLabel="Speaker portal" navItems={SPEAKER_NAV_ITEMS} />
       <main className="mx-auto max-w-3xl px-4 py-8 md:px-8">
+        <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
+          My Events
+        </h1>
         <p className="mb-2 text-sm font-medium text-navy-500">Choose an event</p>
         <EventPicker invites={mapped} activeEventId={active.event.id} />
 

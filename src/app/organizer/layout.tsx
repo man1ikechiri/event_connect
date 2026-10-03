@@ -1,10 +1,13 @@
+// src/app/organizer/layout.tsx
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Sidebar } from "@/components/layout/sidebar";
-import { SignOutButton } from "@/components/layout/sign-out-button";
-import { ORGANIZER_NAV_ITEMS } from "@/lib/nav-items";
+import { UserProvider } from "@/components/layout/user-context";
 
-export default async function OrganizerLayout({ children }: { children: React.ReactNode }) {
+export default async function OrganizerLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -13,7 +16,7 @@ export default async function OrganizerLayout({ children }: { children: React.Re
 
   const { data: profile } = await supabase
     .from("users")
-    .select("organizer_status, full_name")
+    .select("organizer_status, full_name, avatar_url")
     .eq("id", user.id)
     .single();
 
@@ -22,13 +25,15 @@ export default async function OrganizerLayout({ children }: { children: React.Re
   }
 
   return (
-    <div className="min-h-screen bg-surface-muted">
-      <Sidebar
-        portalLabel="Organizer portal"
-        items={ORGANIZER_NAV_ITEMS}
-        footer={<SignOutButton name={profile.full_name} />}
-      />
-      <div className="md:pl-64">{children}</div>
-    </div>
+    <UserProvider
+      user={{
+        id: user.id,
+        name: profile?.full_name ?? null,
+        email: user.email ?? null,
+        avatarUrl: profile?.avatar_url ?? null,
+      }}
+    >
+      <div className="min-h-screen bg-surface-muted">{children}</div>
+    </UserProvider>
   );
 }
