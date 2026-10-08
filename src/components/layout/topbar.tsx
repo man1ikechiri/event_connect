@@ -2,28 +2,34 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Bell } from "lucide-react";
 import { MobileNavTrigger } from "@/components/layout/mobile-nav";
 import { UserMenu } from "@/components/layout/user-menu";
+import { RoleTabs } from "@/components/layout/role-tabs";
 import { cn } from "@/lib/utils/cn";
+import { useCurrentUser } from "@/components/layout/user-context";
 import type { NavItem } from "@/lib/nav-items";
+import type { RoleKey } from "@/lib/auth/roles";
 
 export function Topbar({
-  title,
+  activeRole,
   portalLabel,
   navItems,
+  title,
   unreadNotifications = 0,
   actions,
+  showRoleTabs = true,
 }: {
-  title: string;
+  activeRole: RoleKey;
   portalLabel: string;
   navItems: NavItem[];
+  title?: string;
   unreadNotifications?: number;
   actions?: React.ReactNode;
+  showRoleTabs?: boolean;
 }) {
-  const pathname = usePathname();
+  const user = useCurrentUser();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -42,48 +48,23 @@ export function Topbar({
           : "border-transparent bg-white/70 backdrop-blur-sm",
       )}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 md:gap-4 md:px-8">
+      <div className="flex h-16 items-center gap-3 px-4 md:gap-4 md:px-8">
         <div className="md:hidden">
           <MobileNavTrigger portalLabel={portalLabel} items={navItems} />
         </div>
 
-        <Link href="/" className="flex shrink-0 items-center gap-2">
+        <Link href="/dashboard" className="flex shrink-0 items-center gap-2">
           <span className="inline-block size-2.5 rounded-full bg-amber" aria-hidden />
           <span className="text-sm font-semibold tracking-tight text-navy">
             OurEvents<span className="text-navy-400">.rsvp</span>
           </span>
         </Link>
 
-        <span className="hidden rounded-full bg-surface-muted px-2.5 py-0.5 text-xs font-medium text-navy-500 md:inline-block">
-          {portalLabel}
-        </span>
+        {showRoleTabs && user && (
+          <RoleTabs roles={user.roles} activeRole={activeRole} />
+        )}
 
-        <nav className="hidden flex-1 items-center gap-1 md:flex">
-          {navItems.map((item) => {
-            const active =
-              pathname === item.href || pathname.startsWith(item.href + "/");
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "relative rounded-control px-3 py-1.5 text-sm font-medium transition-colors",
-                  active ? "text-navy" : "text-navy-500 hover:text-navy",
-                )}
-              >
-                {item.label}
-                {active && (
-                  <span
-                    className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-amber"
-                    aria-hidden
-                  />
-                )}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="ml-auto flex items-center gap-2 md:ml-0">
+        <div className="ml-auto flex items-center gap-2">
           {actions}
           <button
             type="button"
@@ -106,7 +87,7 @@ export function Topbar({
         </div>
       </div>
 
-      <h1 className="sr-only">{title}</h1>
+      {title && <h1 className="sr-only">{title}</h1>}
     </header>
   );
 }

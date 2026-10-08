@@ -3,9 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { ORGANIZER_NAV_ITEMS } from "@/lib/nav-items";
 import { cn } from "@/lib/utils/cn";
 import { fetchOrganizerContacts } from "@/lib/profile-lookup";
 
@@ -79,7 +77,6 @@ export default async function OrganizerInvitesPage({
 
   return (
     <>
-      <Topbar title="Invites" portalLabel="Organizer portal" navItems={ORGANIZER_NAV_ITEMS} />
       <main className="mx-auto max-w-6xl px-4 py-8 md:px-8">
         <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
           Invites

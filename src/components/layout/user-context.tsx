@@ -2,12 +2,14 @@
 "use client";
 
 import { createContext, useContext } from "react";
+import type { UserRoles } from "@/lib/auth/roles";
 
 export interface CurrentUser {
   id: string;
   name: string | null;
   email: string | null;
   avatarUrl: string | null;
+  roles: UserRoles;
 }
 
 const UserContext = createContext<CurrentUser | null>(null);

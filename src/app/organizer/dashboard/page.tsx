@@ -3,12 +3,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Plus, MapPin, Video, ChevronRight, CalendarDays } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { formatEventRange, dashboardDateRanges } from "@/lib/utils/dates";
-import { ORGANIZER_NAV_ITEMS } from "@/lib/nav-items";
 import { HeroBanner } from "@/components/layout/hero-banner";
 
 export const metadata: Metadata = { title: "Dashboard" };
@@ -85,18 +83,6 @@ export default async function OrganizerDashboardPage() {
 
   return (
     <>
-      <Topbar
-        title="Dashboard"
-        portalLabel="Organizer portal"
-        navItems={ORGANIZER_NAV_ITEMS}
-        actions={
-          <Link href="/organizer/events/new">
-            <Button size="sm" icon={<Plus className="size-4" aria-hidden />}>
-              Create event
-            </Button>
-          </Link>
-        }
-      />
       <HeroBanner src="/images/hero-banner.png" />
 
       <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 md:px-8">

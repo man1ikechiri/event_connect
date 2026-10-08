@@ -1,5 +1,6 @@
 // src/lib/nav-items.ts
 import type { NavIconName } from "@/lib/nav-icon-registry";
+import type { RoleKey } from "@/lib/auth/roles";
 
 export interface NavItem {
   label: string;
@@ -40,3 +41,15 @@ export const ADMIN_NAV_ITEMS: NavItem[] = [
   { label: "Moderation", href: "/admin/moderation", icon: "ShieldCheck" },
   { label: "Audit log", href: "/admin/audit-log", icon: "History" },
 ];
+
+// ---------------------------------------------------------------------------
+// Role → nav items map. Used by PortalShell to pick the correct sidebar
+// navigation based on the currently active role. Admin is intentionally
+// absent — admin keeps its own dedicated layout without role tabs.
+// ---------------------------------------------------------------------------
+export const NAV_ITEMS_BY_ROLE: Record<RoleKey, NavItem[]> = {
+  organizer: ORGANIZER_NAV_ITEMS,
+  attendee: ATTENDEE_NAV_ITEMS,
+  speaker: SPEAKER_NAV_ITEMS,
+  partner: PARTNER_NAV_ITEMS,
+};

@@ -3,12 +3,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Plus, MapPin, Video, CalendarDays, Mic, Users, Handshake, MessageSquare } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { formatEventRange, relativeTime } from "@/lib/utils/dates";
-import { ORGANIZER_NAV_ITEMS } from "@/lib/nav-items";
 
 export const metadata: Metadata = { title: "Events" };
 
@@ -120,18 +118,6 @@ export default async function OrganizerEventsPage() {
 
   return (
     <>
-      <Topbar
-        title="Events"
-        portalLabel="Organizer portal"
-        navItems={ORGANIZER_NAV_ITEMS}
-        actions={
-          <Link href="/organizer/events/new">
-            <Button size="sm" icon={<Plus className="size-4" aria-hidden />}>
-              Create event
-            </Button>
-          </Link>
-        }
-      />
       <main className="mx-auto max-w-5xl space-y-10 px-4 py-8 md:px-8">
         <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
           Events at a Glance
