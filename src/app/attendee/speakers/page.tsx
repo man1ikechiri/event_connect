@@ -4,9 +4,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { Mic } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
 import { EmptyState } from "@/components/ui/empty-state";
-import { ATTENDEE_NAV_ITEMS } from "@/lib/nav-items";
 import { fetchPublicNames } from "@/lib/profile-lookup";
 import { heroImageFor, initialsOf } from "@/lib/utils/placeholder-images";
 
@@ -66,7 +64,6 @@ export default async function AttendeeSpeakersPage() {
 
   return (
     <>
-      <Topbar title="Speakers" portalLabel="Attendee portal" navItems={ATTENDEE_NAV_ITEMS} />
       <main className="mx-auto max-w-6xl px-4 py-8 md:px-8">
         <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
           Speakers
@@ -95,7 +92,7 @@ export default async function AttendeeSpeakersPage() {
                     sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/40 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-navy/90 via-navy/40 to-transparent" />
                   <div className="absolute bottom-3 left-3 flex items-center gap-3">
                     {s.avatar ? (
                       <Image

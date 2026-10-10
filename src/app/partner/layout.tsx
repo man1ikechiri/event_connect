@@ -1,7 +1,8 @@
-// src/app/partner/layout.tsx
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { UserProvider } from "@/components/layout/user-context";
+import { PortalShell } from "@/components/layout/portal-shell";
+import { getUserRoles } from "@/lib/auth/get-user-roles";
 
 export default async function PartnerLayout({
   children,
@@ -14,19 +15,18 @@ export default async function PartnerLayout({
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/partner/dashboard");
 
-  const [{ data: profile }, { count }] = await Promise.all([
+  const [roles, profileRes] = await Promise.all([
+    getUserRoles(supabase, user.id),
     supabase
       .from("users")
       .select("full_name, avatar_url")
       .eq("id", user.id)
       .single(),
-    supabase
-      .from("event_partner_invites")
-      .select("id", { count: "exact", head: true })
-      .eq("partner_user_id", user.id),
   ]);
 
-  if (!count) redirect("/onboarding");
+  if (!roles.isPartner) redirect("/dashboard");
+
+  const profile = profileRes.data;
 
   return (
     <UserProvider
@@ -35,9 +35,10 @@ export default async function PartnerLayout({
         name: profile?.full_name ?? null,
         email: user.email ?? null,
         avatarUrl: profile?.avatar_url ?? null,
+        roles,
       }}
     >
-      <div className="min-h-screen bg-surface-muted">{children}</div>
+      <PortalShell activeRole="partner">{children}</PortalShell>
     </UserProvider>
   );
 }

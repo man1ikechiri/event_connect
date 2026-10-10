@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
-import { SPEAKER_NAV_ITEMS } from "@/lib/nav-items";
 import { SpeakerProfileForm } from "@/app/speaker/profile/speaker-profile-form";
 
 export const metadata: Metadata = { title: "Profile" };
@@ -24,7 +22,6 @@ export default async function SpeakerProfilePage() {
 
   return (
     <>
-      <Topbar title="Profile" portalLabel="Speaker portal" navItems={SPEAKER_NAV_ITEMS} />
       <main className="mx-auto max-w-2xl px-4 py-8 md:px-8">
         <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
           My Profile

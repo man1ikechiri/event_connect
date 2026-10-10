@@ -2,11 +2,9 @@
 import type { Metadata } from "next";
 import { CalendarCheck2, MapPin, Video, Mic } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
 import { EmptyState } from "@/components/ui/empty-state";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { formatEventRange } from "@/lib/utils/dates";
-import { ATTENDEE_NAV_ITEMS } from "@/lib/nav-items";
 import { AttendeeRespondButtons } from "@/app/attendee/my-events/respond-buttons";
 import { AskQuestionForm } from "@/app/attendee/my-events/ask-question-form";
 import { fetchPublicNames } from "@/lib/profile-lookup";
@@ -67,7 +65,6 @@ export default async function AttendeeMyEventsPage() {
 
   return (
     <>
-      <Topbar title="My events" portalLabel="Attendee portal" navItems={ATTENDEE_NAV_ITEMS} />
       <main className="mx-auto max-w-4xl px-4 py-8 md:px-8">
         <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
           My events

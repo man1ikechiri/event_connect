@@ -1,7 +1,8 @@
-// src/app/speaker/layout.tsx
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { UserProvider } from "@/components/layout/user-context";
+import { PortalShell } from "@/components/layout/portal-shell";
+import { getUserRoles } from "@/lib/auth/get-user-roles";
 
 export default async function SpeakerLayout({
   children,
@@ -14,19 +15,22 @@ export default async function SpeakerLayout({
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/speaker/dashboard");
 
-  const [{ data: profile }, { count }] = await Promise.all([
+  const [roles, profileRes] = await Promise.all([
+    getUserRoles(supabase, user.id),
     supabase
       .from("users")
       .select("full_name, avatar_url")
       .eq("id", user.id)
       .single(),
-    supabase
-      .from("event_speaker_invites")
-      .select("id", { count: "exact", head: true })
-      .eq("speaker_user_id", user.id),
   ]);
 
-  if (!count) redirect("/onboarding");
+  // getUserRoles already returns isSpeaker=false when the user has no
+  // accepted/activated speaker invites, so this one check covers both
+  // "never been invited" and "invited but hasn't accepted yet."
+  // Decision A: non-speakers land on /dashboard (role picker).
+  if (!roles.isSpeaker) redirect("/dashboard");
+
+  const profile = profileRes.data;
 
   return (
     <UserProvider
@@ -35,9 +39,10 @@ export default async function SpeakerLayout({
         name: profile?.full_name ?? null,
         email: user.email ?? null,
         avatarUrl: profile?.avatar_url ?? null,
+        roles,
       }}
     >
-      <div className="min-h-screen bg-surface-muted">{children}</div>
+      <PortalShell activeRole="speaker">{children}</PortalShell>
     </UserProvider>
   );
 }

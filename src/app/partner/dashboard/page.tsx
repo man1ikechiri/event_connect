@@ -3,9 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Users, UserCheck, Mic } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
 import { EmptyState } from "@/components/ui/empty-state";
-import { PARTNER_NAV_ITEMS } from "@/lib/nav-items";
 import { HeroBanner } from "@/components/layout/hero-banner";
 
 export const metadata: Metadata = { title: "Dashboard" };
@@ -28,7 +26,6 @@ export default async function PartnerDashboardPage({ searchParams }: { searchPar
   if (events.length === 0) {
     return (
       <>
-        <Topbar title="Dashboard" portalLabel="Partner portal" navItems={PARTNER_NAV_ITEMS} />
         <HeroBanner src="/images/hero-banner.png" />
         <main className="mx-auto max-w-3xl px-4 py-8 md:px-8">
           <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">

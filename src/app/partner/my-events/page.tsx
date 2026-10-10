@@ -2,11 +2,9 @@
 import type { Metadata } from "next";
 import { HandHeart, MapPin, Video } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
 import { EmptyState } from "@/components/ui/empty-state";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { formatEventRange } from "@/lib/utils/dates";
-import { PARTNER_NAV_ITEMS } from "@/lib/nav-items";
 import { PartnerRespondButtons } from "@/app/partner/my-events/respond-buttons";
 import { PartnerProfileForm } from "@/app/partner/my-events/partner-profile-form";
 
@@ -35,7 +33,6 @@ export default async function PartnerMyEventsPage() {
 
   return (
     <>
-      <Topbar title="My events" portalLabel="Partner portal" navItems={PARTNER_NAV_ITEMS} />
       <main className="mx-auto max-w-3xl px-4 py-8 md:px-8">
         <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
           My Events

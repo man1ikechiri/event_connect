@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPin, Video, CalendarX } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
 import { EmptyState } from "@/components/ui/empty-state";
 import { formatEventRange } from "@/lib/utils/dates";
-import { SPEAKER_NAV_ITEMS } from "@/lib/nav-items";
 import { ProgressTracker } from "@/components/shared/progress-tracker";
 import { RespondButtons } from "@/app/speaker/my-events/respond-buttons";
 
@@ -35,7 +33,6 @@ export default async function SpeakerMyEventsPage({ searchParams }: { searchPara
   if (mapped.length === 0) {
     return (
       <>
-        <Topbar title="My events" portalLabel="Speaker portal" navItems={SPEAKER_NAV_ITEMS} />
         <main className="mx-auto max-w-3xl px-4 py-8 md:px-8">
           <div className="rounded-card border border-dashed border-surface-border bg-white">
             <EmptyState icon={CalendarX} title="No events yet" description="Invites from organizers will show up here." />
@@ -49,7 +46,6 @@ export default async function SpeakerMyEventsPage({ searchParams }: { searchPara
 
   return (
     <>
-      <Topbar title="My events" portalLabel="Speaker portal" navItems={SPEAKER_NAV_ITEMS} />
       <main className="mx-auto max-w-3xl px-4 py-8 md:px-8">
         <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
           My Events

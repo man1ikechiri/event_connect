@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
-import { SPEAKER_NAV_ITEMS } from "@/lib/nav-items";
 import { QaInbox } from "@/app/speaker/qa/qa-inbox";
 
 export const metadata: Metadata = { title: "Q&A inbox" };
@@ -31,7 +29,6 @@ export default async function SpeakerQaPage() {
 
   return (
     <>
-      <Topbar title="Q&A inbox" portalLabel="Speaker portal" navItems={SPEAKER_NAV_ITEMS} />
       <main className="mx-auto max-w-5xl px-4 py-8 md:px-8">
         <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
           Q&A Inbox

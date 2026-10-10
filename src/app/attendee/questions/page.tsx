@@ -1,8 +1,6 @@
 // src/app/attendee/questions/page.tsx
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
-import { ATTENDEE_NAV_ITEMS } from "@/lib/nav-items";
 import { fetchPublicNames } from "@/lib/profile-lookup";
 import { QuestionsClient, type QuestionRow } from "./questions-client";
 
@@ -58,7 +56,6 @@ export default async function AttendeeQuestionsPage() {
 
   return (
     <>
-      <Topbar title="My questions" portalLabel="Attendee portal" navItems={ATTENDEE_NAV_ITEMS} />
       <QuestionsClient questions={questions} />
     </>
   );

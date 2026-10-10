@@ -2,9 +2,7 @@
 import type { Metadata } from "next";
 import { Library } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
 import { EmptyState } from "@/components/ui/empty-state";
-import { SPEAKER_NAV_ITEMS } from "@/lib/nav-items";
 import { ContentCard } from "@/app/speaker/content-library/content-card";
 import { AddContentForm } from "@/app/speaker/content-library/add-content-form";
 
@@ -39,7 +37,6 @@ export default async function ContentLibraryPage() {
 
   return (
     <>
-      <Topbar title="Content library" portalLabel="Speaker portal" navItems={SPEAKER_NAV_ITEMS} />
       <main className="mx-auto max-w-5xl px-4 py-8 md:px-8">
         <h1 className="mb-6 text-2xl font-semibold tracking-tight text-navy">
           Content Library

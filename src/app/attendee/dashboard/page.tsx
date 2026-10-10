@@ -4,11 +4,9 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { CalendarCheck2, Library, ChevronRight, ExternalLink, MessageSquare, CheckCircle2, Sparkles, Mic, Clock,} from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Topbar } from "@/components/layout/topbar";
 import { EmptyState } from "@/components/ui/empty-state";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { formatEventRange, relativeTime } from "@/lib/utils/dates";
-import { ATTENDEE_NAV_ITEMS } from "@/lib/nav-items";
 import { fetchPublicNames } from "@/lib/profile-lookup";
 import { heroImageFor, initialsOf } from "@/lib/utils/placeholder-images";
 import { HeroBanner } from "@/components/layout/hero-banner";
@@ -110,11 +108,10 @@ export default async function AttendeeDashboardPage() {
 
   return (
     <>
-      <Topbar title="Dashboard" portalLabel="Attendee portal" navItems={ATTENDEE_NAV_ITEMS} />
       <HeroBanner src="/images/hero-banner.png" />
       <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 md:px-8">
         {/* Welcome header --------------------------------------------------- */}
-        <section className="flex flex-wrap items-center gap-4 rounded-card border border-surface-border bg-gradient-to-br from-navy to-navy-500 p-6 text-white">
+        <section className="flex flex-wrap items-center gap-4 rounded-card border border-surface-border bg-linear-to-br from-navy to-navy-500 p-6 text-white">
           {(me as { avatar_url: string | null } | null)?.avatar_url ? (
             <Image
               src={(me as { avatar_url: string | null } | null)?.avatar_url ?? ""}
@@ -173,7 +170,7 @@ export default async function AttendeeDashboardPage() {
                         priority= {i === 0}
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/20 to-transparent" />
+                      <div className="absolute inset-0 bg-linear-to-t from-navy/80 via-navy/20 to-transparent" />
                       <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/90 px-2 py-0.5 text-[11px] font-semibold text-navy">
                         <Clock className="size-3" aria-hidden />
                         in {days}d
@@ -227,7 +224,7 @@ export default async function AttendeeDashboardPage() {
                       priority= {i === 0}
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-navy/80 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-navy/80 to-transparent" />
                     <div className="absolute bottom-3 left-3 flex items-center gap-2">
                       {s.avatar ? (
                         <Image

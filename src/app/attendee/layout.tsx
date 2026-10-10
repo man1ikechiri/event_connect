@@ -1,8 +1,8 @@
-// src/app/attendee/layout.tsx
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { UserProvider } from "@/components/layout/user-context";
-import { ATTENDEE_NAV_ITEMS } from "@/lib/nav-items";
+import { PortalShell } from "@/components/layout/portal-shell";
+import { getUserRoles } from "@/lib/auth/get-user-roles";
 
 export default async function AttendeeLayout({
   children,
@@ -15,11 +15,20 @@ export default async function AttendeeLayout({
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/attendee/dashboard");
 
-  const { data: profile } = await supabase
-    .from("users")
-    .select("full_name, avatar_url")
-    .eq("id", user.id)
-    .single();
+  const [roles, profileRes] = await Promise.all([
+    getUserRoles(supabase, user.id),
+    supabase
+      .from("users")
+      .select("full_name, avatar_url")
+      .eq("id", user.id)
+      .single(),
+  ]);
+
+  // isAttendee is always true for signed-in users, so this guard is a
+  // formality — kept for symmetry and future-proofing if that rule changes.
+  if (!roles.isAttendee) redirect("/dashboard");
+
+  const profile = profileRes.data;
 
   return (
     <UserProvider
@@ -28,9 +37,10 @@ export default async function AttendeeLayout({
         name: profile?.full_name ?? null,
         email: user.email ?? null,
         avatarUrl: profile?.avatar_url ?? null,
+        roles,
       }}
     >
-      <div className="min-h-screen bg-surface-muted">{children}</div>
+      <PortalShell activeRole="attendee">{children}</PortalShell>
     </UserProvider>
   );
 }

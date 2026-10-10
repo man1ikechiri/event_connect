@@ -55,8 +55,10 @@ export default async function OrganizerInvitesPage({
     .select("id, title")
     .eq("organizer_id", user.id);
 
-  const eventIds = (myEvents ?? []).map((e) => e.id);
-  const eventTitleById = new Map((myEvents ?? []).map((e) => [e.id, e.title]));
+  const eventIds = ((myEvents ?? []) as Array<{ id: string }>).map((e) => e.id);
+  const eventTitleById = new Map<string, string>(
+    ((myEvents ?? []) as Array<{ id: string; title: string }>).map((e) => [e.id, e.title]),
+  );
 
   const selectCols = activeRole.extraCols
     ? `id, status, event_id, ${activeRole.userCol}, ${activeRole.extraCols}`
@@ -71,9 +73,20 @@ export default async function OrganizerInvitesPage({
 
   const contacts = await fetchOrganizerContacts(supabase);
 
-  const byStage = Object.fromEntries(
-    STAGES.map((stage) => [stage, (rows ?? []).filter((r: any) => r.status === stage)]),
-  ) as Record<(typeof STAGES)[number], any[]>;
+  const byStage: Record<(typeof STAGES)[number], any[]> = {
+    invited: [],
+    accepted: [],
+    activated: [],
+    declined: [],
+    suspended: [],
+  };
+
+  for (const row of (rows ?? []) as Array<{ status: string }>) {
+    const stage = row.status as (typeof STAGES)[number];
+    if (stage in byStage) {
+      byStage[stage].push(row);
+    }
+  }
 
   return (
     <>
@@ -106,7 +119,7 @@ export default async function OrganizerInvitesPage({
                 <StatusBadge status={stage} />
                 <span className="text-sm font-medium text-navy-400">{byStage[stage].length}</span>
               </div>
-              <ul className="max-h-[32rem] divide-y divide-surface-border overflow-y-auto">
+              <ul className="max-h-128 divide-y divide-surface-border overflow-y-auto">
                 {byStage[stage].length === 0 ? (
                   <li className="px-4 py-6 text-center text-xs text-navy-400">None</li>
                 ) : (

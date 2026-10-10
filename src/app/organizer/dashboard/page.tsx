@@ -1,9 +1,8 @@
 // src/app/organizer/dashboard/page.tsx
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Plus, MapPin, Video, ChevronRight, CalendarDays } from "lucide-react";
+import { MapPin, Video, ChevronRight, CalendarDays } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { formatEventRange, dashboardDateRanges } from "@/lib/utils/dates";
